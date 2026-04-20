@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reimac</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary: #D4A017;
+            --primary-dark: #B8860B;
+            --dark: #1a1a2e;
+            --darker: #0f0f1a;
+            --light-gray: #a0a0b8;
+            --white: #ffffff;
+            --accent: #FF6B35;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+                        background-color: var(--darker);
+            color: var(--white);
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 0.9rem 5%;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+        .nav-logo {
+            margin-left: -20px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+        .nav-logo img { width: 150px; }
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--white);
+        }
+        .nav-logo-text span { 
+            color: var(--primary); 
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-cta {
+            background: var(--primary);
+            color: var(--dark) !important;
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .nav-cta:hover {
+            background: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: var(--white);
+            transition: all 0.3s;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.35);
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15,15,26,0.92) 0%, rgba(15,15,26,0.5) 60%, rgba(15,15,26,0.85) 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+            padding-top: 80px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(212, 160, 23, 0.15);
+            border: 1px solid rgba(212, 160, 23, 0.4);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), #FF6B35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            max-width: 580px;
+            margin-bottom: 2.5rem;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 1.1rem 2.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.4s;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: var(--dark);
+        }
+        .btn-primary:hover {
+            background: var(--white);
+            transform: translateY(-4px);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .section-label {
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            margin: 1rem 0;
+        }
+
+        /* About */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .about-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+        .about-image:hover img { transform: scale(1.08); }
+
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .service-card {
+            background: var(--dark);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            transition: all 0.4s;
+        }
+        .service-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Gallery */
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        .filter-btn {
+            padding: 0.7rem 1.8rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: var(--light-gray);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+            border-color: var(--primary);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img { transform: scale(1.12); }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.98);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img {
+            max-width: 95%;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        .lightbox-close, .lightbox-prev, .lightbox-next {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+        .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+        .lightbox-close { top: 30px; right: 30px; }
+        .lightbox-prev { left: 30px; }
+        .lightbox-next { right: 30px; }
+
+        /* Footer */
+        footer {
+            background: #0a0a14;
+            padding: 80px 5% 30px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { 
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--darker);
+                flex-direction: column;
+                padding: 100px 2rem;
+                transition: 0.4s;
+            }
+            .nav-links.active { right: 0; }
+            .hamburger { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <img src="reimac.png" />
+        </a>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#proyectos">Proyectos</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#" class="nav-cta">Cotizar Ahora</a></li>
+        </ul>
+        
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg">
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <div class="hero-badge">
+                <div class="hero-badge-dot"></div>
+                20 AÑOS CONSTRUYENDO SUEÑOS
+            </div>
+            <h1>Construimos tu <span>futuro</span><br>con excelencia</h1>
+            <p>Especialistas en construcción residencial y comercial en Guayaquil y Ecuador. Calidad, puntualidad y transparencia en cada proyecto.</p>
+            
+            <div class="hero-buttons">
+                <a href="#proyectos" class="btn btn-primary">Ver Nuestros Proyectos</a>
+                <a href="#contacto" class="btn btn-secondary">Solicitar Cotización</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="section about-section" id="nosotros">
+        <div class="section-header">
+            <span class="section-label">Sobre Nosotros</span>
+            <h2 class="section-title">Construyendo con <span style="color:var(--primary)">pasión y experiencia</span></h2>
+        </div>
+        
+        <div class="about-grid">
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800" alt="Equipo Reimac">
+            </div>
+            <div>
+                <h3>Somos <span style="color:var(--primary)">Reimac</span>, con más de <span style="color:var(--primary)">20 años</span> de experiencia</h3>
+                <p>En Reimac convertimos tus ideas en realidad. Nos especializamos en viviendas modernas, edificios residenciales y proyectos comerciales con los más altos estándares de calidad.</p>
+                <p>Nuestro compromiso es entregar obras terminadas a tiempo, con materiales de primera y un excelente servicio post-venta.</p>
+                
+                <div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div style="background:rgba(212,160,23,0.1); padding:1.5rem; border-radius:12px;">
+                        <h4 style="color:var(--primary); font-size:2rem;">40+</h4>
+                        <p>Proyectos Completados</p>
+                    </div>
+                    <div style="background:rgba(212,160,23,0.1); padding:1.5rem; border-radius:12px;">
+                        <h4 style="color:var(--primary); font-size:2rem;">98%</h4>
+                        <p>Clientes Satisfechos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section" id="servicios" style="background: var(--dark);">
+        <div class="section-header">
+            <span class="section-label">Nuestros Servicios</span>
+            <h2 class="section-title">¿Qué hacemos?</h2>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Construcción Residencial</h3>
+                <p>Casas modernas, urbanizaciones y condominios con diseño contemporáneo y alta calidad.</p>
+            </div>
+            <div class="service-card">
+                <h3>Remodelaciones</h3>
+                <p>Renovación completa de interiores, ampliaciones y modernización de espacios.</p>
+            </div>
+            <div class="service-card">
+                <h3>Construcción Comercial</h3>
+                <p>Edificios corporativos, locales comerciales, bodegas y centros de negocios.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery / Proyectos -->
+    <section class="section gallery-section" id="proyectos">
+        <div class="section-header">
+            <span class="section-label">Nuestros Proyectos</span>
+            <h2 class="section-title">Lo que hemos construido</h2>
+        </div>
+
+        <div class="gallery-filters">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="casa">Casas</button>
+            <button class="filter-btn" data-filter="edificio">Edificios</button>
+            <button class="filter-btn" data-filter="remodelacion">Remodelaciones</button>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid"></div>
+        <div class="gallery-grid" id="gallery-grid"></div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="galeria.html" class="btn btn-primary">Ver todos los proyectos</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="footer-grid">
+            <div>
+                <h3 style="color:var(--primary); margin-bottom:1rem;">Reimac</h3>
+                <p>Construyendo sueños en Guayaquil y todo el Ecuador desde 1990.</p>
+            </div>
+            <div>
+                <h4>Contacto</h4>
+                <p><strong>Teléfono:</strong> +593 96 346 7014</p>
+                <p><strong>Email:</strong> reikmacias70@gmail.com </p>
+                <p><strong>Facebook:</strong> Maestro Albañil Reinaldo Macias</p>
+            </div>
+            <div>
+                <h4>Horario</h4>
+                <p>Lunes a Sabado: 8:00 - 16:00</p>
+            </div>
+        </div>
+        <div style="text-align:center; padding-top:2rem; border-top:1px solid rgba(255,255,255,0.1);">
+            <p>&copy; 2026 Reimac. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="close-lightbox">×</button>
+        <button class="lightbox-prev" id="prev-btn">‹</button>
+        <img id="lightbox-image" src="" alt="">
+        <button class="lightbox-next" id="next-btn">›</button>
+    </div>
+
+    <script>
+        // Navbar scroll
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Gallery Projects
+        const projects = [
+            { id: 1, category: "casa", img: "img1.png", title: "Casa Moderna" },
+            { id: 2, category: "remodelacion", img: "img2.png", title: "Rejas Personalizadas" },
+            { id: 3, category: "remodelacion", img: "img3.png", title: "Puerta Personalizada" },
+            { id: 4, category: "casa", img: "img4.png", title: "Remodelación de ceramica y Pared" },
+            { id: 5, category: "edificio", img: "img5.png", title: "Condominio Las Palmas" },
+            { id: 6, category: "remodelacion", img: "img6.jpeg", title: "Baño Personalizado" }
+        ];
+
+        function renderGallery(filter = 'all') {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+
+            filtered.forEach(project => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${project.img}" alt="${project.title}">
+                    <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(0,0,0,0.8)); padding:1.5rem 1rem; color:white;">
+                        <h4>${project.title}</h4>
+                    </div>
+                `;
+                item.addEventListener('click', () => openLightbox(project.img, project.title));
+                grid.appendChild(item);
+            });
+        }
+
+        // Lightbox
+        function openLightbox(src, title) {
+            document.getElementById('lightbox-image').src = src;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        document.getElementById('close-lightbox').addEventListener('click', () => {
+            document.getElementById('lightbox').classList.remove('active');
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderGallery(btn.getAttribute('data-filter'));
+            });
+        });
+
+        // Inicializar
+        renderGallery();
+
+        // Cerrar lightbox con Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                document.getElementById('lightbox').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

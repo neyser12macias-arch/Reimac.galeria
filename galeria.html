@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Proyectos - Reimac</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <style>
+        /* Copiamos tus estilos base para que todo se vea igual */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #D4A017;
+            --primary-dark: #B8860B;
+            --dark: #1a1a2e;
+            --darker: #0f0f1a;
+            --light-gray: #a0a0b8;
+            --white: #ffffff;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--darker);
+            color: var(--white);
+            line-height: 1.6;
+        }
+
+        /* Navbar (Fija arriba) */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 15, 26, 0.95); /* Siempre oscura en galería */
+            backdrop-filter: blur(20px);
+        }
+        .nav-logo img { width: 150px; }
+        .nav-links { display: flex; list-style: none; gap: 2.2rem; align-items: center; }
+        .nav-links a { color: var(--light-gray); text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--white); }
+        .nav-cta { background: var(--primary); color: var(--dark) !important; padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 700; }
+
+        /* Estilos específicos de la Galería */
+        .gallery-container {
+            padding: 140px 5% 80px; /* Espacio para que no choque con la navbar */
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 1rem; }
+        
+        .gallery-filters { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 0.7rem 1.8rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: var(--light-gray);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover { background: var(--primary); color: var(--dark); border-color: var(--primary); }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 4/3;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        /* Lightbox (El zoom de la foto) */
+        .lightbox {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            display: none; align-items: center; justify-content: center; z-index: 2000;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img { max-width: 90%; max-height: 80vh; border-radius: 8px; }
+        .lightbox-close { position: absolute; top: 30px; right: 30px; font-size: 2rem; color: white; cursor: pointer; background: none; border: none; }
+
+        footer { background: #0a0a14; padding: 60px 5% 30px; margin-top: 50px; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">
+            <img src="reimac.png" alt="Logo Reimac">
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="index.html#nosotros">Nosotros</a></li>
+            <li><a href="index.html#servicios">Servicios</a></li>
+            <li><a href="#" style="color: var(--primary)">Galería</a></li>
+            <li><a href="index.html#contacto" class="nav-cta">Cotizar</a></li>
+        </ul>
+    </nav>
+
+    <main class="gallery-container">
+        <div class="section-header">
+            <h1 class="section-title">Nuestra Galería</h1>
+            <p>Explora la calidad de nuestros trabajos terminados.</p>
+        </div>
+
+        <div class="gallery-filters">
+            <button class="filter-btn active" onclick="filterGallery('all')">Todos</button>
+            <button class="filter-btn" onclick="filterGallery('casa')">Casas</button>
+            <button class="filter-btn" onclick="filterGallery('remodelacion')">Remodelaciones</button>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid">
+            </div>
+    </main>
+
+    <footer>
+        <div style="text-align:center;">
+            <p>&copy; 2026 Reimac. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <img id="lightbox-img" src="">
+    </div>
+
+    <script>
+        const projects = [
+            { id: 1, category: "casa", img: "img1.png", title: "Casa Moderna" },
+            { id: 2, category: "remodelacion", img: "img2.png", title: "Rejas" },
+            { id: 3, category: "remodelacion", img: "img3.png", title: "Puerta" },
+            { id: 4, category: "casa", img: "img4.png", title: "Pisos" },
+            { id: 5, category: "casa", img: "img5.png", title: "Condominio" },
+            { id: 6, category: "remodelacion", img: "img6.jpeg", title: "Baño" },
+            { id: 7, category: "remodelacion", img: "img7.png", title: "Zinc" }
+        ];
+
+        function renderGallery(filter = 'all') {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+
+            filtered.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = () => openLightbox(p.img);
+                item.innerHTML = `<img src="${p.img}" alt="${p.title}">`;
+                grid.appendChild(item);
+            });
+        }
+
+        function filterGallery(cat) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderGallery(cat);
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // Carga inicial
+        renderGallery();
+    </script>
+</body>
+</html>
