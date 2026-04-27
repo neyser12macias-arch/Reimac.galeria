@@ -487,13 +487,6 @@
             <h2 class="section-title">Lo que hemos construido</h2>
         </div>
 
-        <div class="gallery-filters">
-            <button class="filter-btn active" data-filter="all">Todos</button>
-            <button class="filter-btn" data-filter="casa">Casas</button>
-            <button class="filter-btn" data-filter="edificio">Edificios</button>
-            <button class="filter-btn" data-filter="remodelacion">Remodelaciones</button>
-        </div>
-
         <div style="style-display: flex; justify-content: flex-end; width: 1000%; margin-bottom: 20px; padding-left: 80px; margin-top: 1px;">
             <a href="galeria.html" class="btn btn-primary">Ver todos los proyectos</a>
         </div>
@@ -585,16 +578,6 @@
     window.addEventListener('scroll', () => {
         document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
     });
-
-    // Galería (Tu código de proyectos que ya tenías)
-    const projects = [
-        { id: 1, category: "casa", img: "img1.png", title: "Casa Moderna" },
-        { id: 2, category: "remodelacion", img: "img2.png", title: "Rejas Personalizadas" },
-        { id: 3, category: "remodelacion", img: "img3.png", title: "Puerta Personalizada" },
-        { id: 4, category: "casa", img: "img4.png", title: "Remodelación de ceramica y Pared" },
-        { id: 5, category: "edificio", img: "img5.png", title: "Condominio Las Palmas" },
-        { id: 6, category: "remodelacion", img: "img6.jpeg", title: "Baño Personalizado" }
-    ];
 
         function renderGallery(filter = 'all') {
             const grid = document.getElementById('gallery-grid');
