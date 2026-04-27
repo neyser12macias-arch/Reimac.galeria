@@ -38,7 +38,7 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 1.2rem 5%;
+            padding: 1.2rem 8%; /* Subimos de 5% a 8% para centrarlo más */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -50,8 +50,8 @@
             padding: 0.9rem 5%;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
         }
-        .nav-logo {
-            margin-left: -20px;
+.nav-logo {
+            /* margin-left: -20px;  <-- Borra o comenta esta línea */
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -385,22 +385,24 @@
         }
 
 @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 8%; /* Mantiene el espacio elegante a los lados */
+            }
+            
             .nav-links { 
                 position: fixed;
                 top: 0;
-                right: -100%; /* Escondido */
+                right: -100%;
                 width: 80%;
                 height: 100vh;
                 background: var(--darker);
-                display: flex; /* Asegura que se use flexbox */
-                flex-direction: column; /* Enlaces uno abajo del otro */
-                align-items: center;
-                justify-content: center;
-                gap: 2rem;
+                flex-direction: column;
+                padding: 100px 2rem;
                 transition: 0.4s;
-                z-index: 1000;
-                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
             }
+            .nav-links.active { right: 0; }
+            .hamburger { display: flex; }
+        }
 
             .nav-links.active { 
                 right: 0; /* Se desliza hacia adentro */
