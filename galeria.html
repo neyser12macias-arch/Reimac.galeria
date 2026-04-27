@@ -90,22 +90,64 @@
         .lightbox-close { position: absolute; top: 30px; right: 30px; font-size: 2rem; color: white; cursor: pointer; background: none; border: none; }
 
         footer { background: #0a0a14; padding: 60px 5% 30px; margin-top: 50px; border-top: 1px solid #222; }
+
+/* Estilos para el menú móvil */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: var(--white);
+            transition: 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .close-menu { display: block !important; }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--darker);
+                flex-direction: column;
+                padding: 80px 2rem;
+                transition: 0.4s;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            }
+            .nav-links.active { right: 0; }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="index.html" class="nav-logo">
-            <img src="reimac.png" alt="Logo Reimac">
-        </a>
-        <ul class="nav-links">
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="index.html#nosotros">Nosotros</a></li>
-            <li><a href="index.html#servicios">Servicios</a></li>
-            <li><a href="#" style="color: var(--primary)">Galería</a></li>
-            <li><a href="index.html#contacto" class="nav-cta">Cotizar</a></li>
-        </ul>
-    </nav>
+<nav class="navbar">
+    <a href="index.html" class="nav-logo">
+        <img src="reimac.png" alt="Logo Reimac">
+    </a>
+    
+    <ul class="nav-links" id="nav-links">
+        <li id="close-menu" class="close-menu" style="display: none; font-size: 40px; color: var(--primary); cursor: pointer; align-self: flex-end; list-style: none; padding: 10px 20px;">&times;</li>
+        
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+        <li><a href="index.html#servicios">Servicios</a></li>
+        <li><a href="#" style="color: var(--primary)">Galería</a></li>
+        <li><a href="index.html#contacto" class="nav-cta">Cotizar</a></li>
+    </ul>
+
+        <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
 
     <main class="gallery-container">
         <div class="section-header">
@@ -135,6 +177,26 @@
     </div>
 
     <script>
+// Lógica del menú lateral
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        const closeBtn = document.getElementById('close-menu');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
+
+        // Cerrar menú al tocar un enlace
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
         const projects = [
             { id: 1, category: "casa", img: "img1.png", title: "Casa Moderna" },
             { id: 2, category: "remodelacion", img: "img2.png", title: "Rejas" },
