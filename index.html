@@ -120,6 +120,22 @@
             transition: all 0.3s;
         }
 
+/* Estilos para la X de cierre */
+        .close-menu {
+            display: none; /* Por defecto no se ve en computadora */
+            font-size: 40px;
+            color: var(--primary);
+            cursor: pointer;
+            align-self: flex-end; /* La manda a la derecha */
+            list-style: none;
+            padding: 10px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .close-menu {
+                display: block; /* Solo aparece en celulares */
+            }
+        }
         /* Hero */
         .hero {
             min-height: 100vh;
@@ -388,26 +404,28 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar" id="navbar">
-        <a href="#" class="nav-logo">
-            <img src="reimac.png" />
-        </a>
-        
-        <ul class="nav-links" id="nav-links">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#nosotros">Nosotros</a></li>
-            <li><a href="#servicios">Servicios</a></li>
-            <li><a href="#proyectos">Proyectos</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-            <li><a href="#" class="nav-cta">Cotizar Ahora</a></li>
-        </ul>
-        
+<nav class="navbar" id="navbar">
+    <a href="#" class="nav-logo">
+        <img src="reimac.png" />
+    </a>
+    
+<ul class="nav-links" id="nav-links">
+    <li id="close-menu" class="close-menu">&times;</li> 
+    
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#" class="nav-cta">Cotizar Ahora</a></li>
+</ul>
+    
         <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
 
     <!-- Hero -->
     <section class="hero" id="inicio">
@@ -497,12 +515,13 @@
             <button class="filter-btn" data-filter="remodelacion">Remodelaciones</button>
         </div>
 
+        <div style="style-display: flex; justify-content: flex-end; width: 1000%; margin-bottom: 20px; padding-left: 80px; margin-top: 1px;">
+            <a href="galeria.html" class="btn btn-primary">Ver todos los proyectos</a>
+        </div>
+
         <div class="gallery-grid" id="gallery-grid"></div>
         <div class="gallery-grid" id="gallery-grid"></div>
 
-        <div style="text-align: center; margin-top: 3rem;">
-            <a href="galeria.html" class="btn btn-primary">Ver todos los proyectos</a>
-        </div>
     </section>
 
     <!-- Footer -->
@@ -536,79 +555,63 @@
         <button class="lightbox-next" id="next-btn">›</button>
     </div>
 
-    <script>
-        // Navbar scroll
-        window.addEventListener('scroll', () => {
-            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+<script>
+    // Elementos del menú
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    const closeBtn = document.getElementById('close-menu');
+
+    // 1. Abrir menú (Rayitas)
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.add('active');
+        hamburger.classList.add('active');
+    });
+
+    // 2. Cerrar menú (La X que pediste)
+    closeBtn.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        hamburger.classList.remove('active');
+    });
+
+    // 3. Cerrar al tocar un enlace (Para que no se quede abierto al navegar)
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            hamburger.classList.remove('active');
         });
+    });
 
-        // Hamburger menu
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('nav-links');
-        
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
+    // Navbar efecto scroll
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Galería (Tu código de proyectos que ya tenías)
+    const projects = [
+        { id: 1, category: "casa", img: "img1.png", title: "Casa Moderna" },
+        { id: 2, category: "remodelacion", img: "img2.png", title: "Rejas Personalizadas" },
+        { id: 3, category: "remodelacion", img: "img3.png", title: "Puerta Personalizada" },
+        { id: 4, category: "casa", img: "img4.png", title: "Remodelación de ceramica y Pared" },
+        { id: 5, category: "edificio", img: "img5.png", title: "Condominio Las Palmas" },
+        { id: 6, category: "remodelacion", img: "img6.jpeg", title: "Baño Personalizado" }
+    ];
+
+    function renderGallery(filter = 'all') {
+        const grid = document.getElementById('gallery-grid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+        filtered.forEach(project => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `
+                <img src="${project.img}" alt="${project.title}">
+            `;
+            grid.appendChild(item);
         });
-
-        // Gallery Projects
-        const projects = [
-            { id: 1, category: "casa", img: "img1.png", title: "Casa Moderna" },
-            { id: 2, category: "remodelacion", img: "img2.png", title: "Rejas Personalizadas" },
-            { id: 3, category: "remodelacion", img: "img3.png", title: "Puerta Personalizada" },
-            { id: 4, category: "casa", img: "img4.png", title: "Remodelación de ceramica y Pared" },
-            { id: 5, category: "edificio", img: "img5.png", title: "Condominio Las Palmas" },
-            { id: 6, category: "remodelacion", img: "img6.jpeg", title: "Baño Personalizado" }
-        ];
-
-        function renderGallery(filter = 'all') {
-            const grid = document.getElementById('gallery-grid');
-            grid.innerHTML = '';
-
-            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
-
-            filtered.forEach(project => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.innerHTML = `
-                    <img src="${project.img}" alt="${project.title}">
-                    <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(0,0,0,0.8)); padding:1.5rem 1rem; color:white;">
-                        <h4>${project.title}</h4>
-                    </div>
-                `;
-                item.addEventListener('click', () => openLightbox(project.img, project.title));
-                grid.appendChild(item);
-            });
-        }
-
-        // Lightbox
-        function openLightbox(src, title) {
-            document.getElementById('lightbox-image').src = src;
-            document.getElementById('lightbox').classList.add('active');
-        }
-
-        document.getElementById('close-lightbox').addEventListener('click', () => {
-            document.getElementById('lightbox').classList.remove('active');
-        });
-
-        // Filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                renderGallery(btn.getAttribute('data-filter'));
-            });
-        });
-
-        // Inicializar
-        renderGallery();
-
-        // Cerrar lightbox con Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") {
-                document.getElementById('lightbox').classList.remove('active');
-            }
-        });
-    </script>
+    }
+    renderGallery();
+</script>
 </body>
 </html>
