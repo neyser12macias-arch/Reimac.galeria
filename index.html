@@ -384,20 +384,44 @@
             margin-bottom: 3rem;
         }
 
-        @media (max-width: 768px) {
+@media (max-width: 768px) {
             .nav-links { 
                 position: fixed;
                 top: 0;
-                right: -100%;
+                right: -100%; /* Escondido */
                 width: 80%;
                 height: 100vh;
                 background: var(--darker);
-                flex-direction: column;
-                padding: 100px 2rem;
+                display: flex; /* Asegura que se use flexbox */
+                flex-direction: column; /* Enlaces uno abajo del otro */
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
                 transition: 0.4s;
+                z-index: 1000;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
             }
-            .nav-links.active { right: 0; }
-            .hamburger { display: flex; }
+
+            .nav-links.active { 
+                right: 0; /* Se desliza hacia adentro */
+            }
+
+            .hamburger { 
+                display: flex; /* Muestra las 3 rayitas */
+                z-index: 1100;
+            }
+
+            .close-menu {
+                display: block !important; /* Muestra la X */
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+            
+            /* Ajuste opcional para que el logo no choque con las rayitas */
+            .nav-logo img {
+                width: 120px;
+            }
         }
     </style>
 </head>
