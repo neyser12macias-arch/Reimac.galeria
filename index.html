@@ -596,21 +596,36 @@
         { id: 6, category: "remodelacion", img: "img6.jpeg", title: "Baño Personalizado" }
     ];
 
-    function renderGallery(filter = 'all') {
-        const grid = document.getElementById('gallery-grid');
-        if(!grid) return;
-        grid.innerHTML = '';
-        const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
-        filtered.forEach(project => {
-            const item = document.createElement('div');
-            item.className = 'gallery-itema';
-            item.innerHTML = `
-                <img src="${project.img}" alt="${project.title}">
-            `;
-            grid.appendChild(item);
-        });
-    }
-    renderGallery();
-</script>
+        function renderGallery(filter = 'all') {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+
+            filtered.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = () => openLightbox(p.img);
+                item.innerHTML = `<img src="${p.img}" alt="${p.title}">`;
+                grid.appendChild(item);
+            });
+        }
+
+        function filterGallery(cat) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderGallery(cat);
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // Carga inicial
+        renderGallery();
 </body>
 </html>
