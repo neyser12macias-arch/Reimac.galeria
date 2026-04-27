@@ -34,20 +34,65 @@
         /* Navbar */
         .navbar {
             position: fixed;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
             padding: 1.2rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(15, 15, 26, 0.95); /* Siempre oscura en galería */
+            transition: all 0.4s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(15, 15, 26, 0.95);
             backdrop-filter: blur(20px);
+            padding: 0.9rem 5%;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+        .nav-logo {
+            margin-left: -20px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
         }
         .nav-logo img { width: 150px; }
-        .nav-links { display: flex; list-style: none; gap: 2.2rem; align-items: center; }
-        .nav-links a { color: var(--light-gray); text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--white);
+        }
+        .nav-logo-text span { 
+            color: var(--primary); 
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
         .nav-links a:hover { color: var(--white); }
-        .nav-cta { background: var(--primary); color: var(--dark) !important; padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 700; }
+        .nav-links a:hover::after { width: 100%; }
 
         .nav-cta {
             background: var(--primary);
@@ -339,66 +384,42 @@
             margin-bottom: 3rem;
         }
 
-
-@media (max-width: 768px) {
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%; /* Esto lo esconde a la derecha */
-        width: 70%;    /* Ancho del menú en el celular */
-        height: 100vh;
-        background-color: var(--darker);
-        display: flex;
-        flex-direction: column; /* Pone los enlaces uno abajo del otro */
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        transition: 0.4s ease;
-        z-index: 1000;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-    }
-
-            .nav-links.active { 
-                right: 0; /* Se desliza hacia adentro */
+        @media (max-width: 768px) {
+            .nav-links { 
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--darker);
+                flex-direction: column;
+                padding: 100px 2rem;
+                transition: 0.4s;
             }
-
-            .hamburger { 
-                display: flex; /* Muestra las 3 rayitas */
-                z-index: 1100;
-            }
-
-            .close-menu {
-                display: block !important; /* Muestra la X */
-                position: absolute;
-                top: 20px;
-                right: 20px;
-            }
-            
-            /* Ajuste opcional para que el logo no choque con las rayitas */
-            .nav-logo img {
-                width: 120px;
-            }
+            .nav-links.active { right: 0; }
+            .hamburger { display: flex; }
         }
     </style>
 </head>
 <body>
 
     <!-- Navbar -->
-<nav class="navbar">
-    <a href="index.html" class="nav-logo">
-        <img src="reimac.png" alt="Logo Reimac">
+<nav class="navbar" id="navbar">
+    <a href="#" class="nav-logo">
+        <img src="reimac.png" />
     </a>
     
-    <ul class="nav-links" id="nav-links">
-        <li id="close-menu" class="close-menu" style="display: none; font-size: 40px; color: var(--primary); cursor: pointer; align-self: flex-end; list-style: none; padding: 10px 20px;">&times;</li>
-        
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="index.html#nosotros">Nosotros</a></li>
-        <li><a href="index.html#servicios">Servicios</a></li>
-        <li><a href="#" style="color: var(--primary)">Galería</a></li>
-        <li><a href="index.html#contacto" class="nav-cta">Cotizar</a></li>
-    </ul>
-
+<ul class="nav-links" id="nav-links">
+    <li id="close-menu" class="close-menu">&times;</li> 
+    
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#" class="nav-cta">Cotizar Ahora</a></li>
+</ul>
+    
         <div class="hamburger" id="hamburger">
         <span></span>
         <span></span>
@@ -487,6 +508,13 @@
             <h2 class="section-title">Lo que hemos construido</h2>
         </div>
 
+        <div class="gallery-filters">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="casa">Casas</button>
+            <button class="filter-btn" data-filter="edificio">Edificios</button>
+            <button class="filter-btn" data-filter="remodelacion">Remodelaciones</button>
+        </div>
+
         <div style="style-display: flex; justify-content: flex-end; width: 1000%; margin-bottom: 20px; padding-left: 80px; margin-top: 1px;">
             <a href="galeria.html" class="btn btn-primary">Ver todos los proyectos</a>
         </div>
@@ -528,26 +556,6 @@
     </div>
 
 <script>
-    // Lógica del menú lateral
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('nav-links');
-        const closeBtn = document.getElementById('close-menu');
-
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.add('active');
-        });
-
-        closeBtn.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-        });
-
-        // Cerrar menú al tocar un enlace
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-
     // Elementos del menú
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
@@ -579,36 +587,31 @@
         document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
     });
 
-        function renderGallery(filter = 'all') {
-            const grid = document.getElementById('gallery-grid');
-            grid.innerHTML = '';
-            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+    // Galería (Tu código de proyectos que ya tenías)
+    const projects = [
+        { id: 1, category: "casa", img: "img1.png", title: "Casa Moderna" },
+        { id: 2, category: "remodelacion", img: "img2.png", title: "Rejas Personalizadas" },
+        { id: 3, category: "remodelacion", img: "img3.png", title: "Puerta Personalizada" },
+        { id: 4, category: "casa", img: "img4.png", title: "Remodelación de ceramica y Pared" },
+        { id: 5, category: "edificio", img: "img5.png", title: "Condominio Las Palmas" },
+        { id: 6, category: "remodelacion", img: "img6.jpeg", title: "Baño Personalizado" }
+    ];
 
-            filtered.forEach(p => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.onclick = () => openLightbox(p.img);
-                item.innerHTML = `<img src="${p.img}" alt="${p.title}">`;
-                grid.appendChild(item);
-            });
-        }
-
-        function filterGallery(cat) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderGallery(cat);
-        }
-
-        function openLightbox(src) {
-            document.getElementById('lightbox-img').src = src;
-            document.getElementById('lightbox').classList.add('active');
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-        }
-
-        // Carga inicial
-        renderGallery();
+    function renderGallery(filter = 'all') {
+        const grid = document.getElementById('gallery-grid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+        filtered.forEach(project => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `
+                <img src="${project.img}" alt="${project.title}">
+            `;
+            grid.appendChild(item);
+        });
+    }
+    renderGallery();
+</script>
 </body>
 </html>
