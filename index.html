@@ -630,7 +630,7 @@
         const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
         filtered.forEach(project => {
             const item = document.createElement('div');
-            item.className = 'gallery-item';
+            item.className = 'gallery-itema';
             item.innerHTML = `
                 <img src="${project.img}" alt="${project.title}">
             `;
