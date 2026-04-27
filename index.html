@@ -32,65 +32,22 @@
         }
 
         /* Navbar */
-.navbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    padding: 1.2rem 10%; /* Esto centra el contenido en PC */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.4s ease;
-}
-        .navbar.scrolled {
-            background: rgba(15, 15, 26, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 0.9rem 5%;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-        }
-.nav-logo {
-            /* margin-left: -20px;  <-- Borra o comenta esta línea */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 1.2rem 5%;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
+            background: rgba(15, 15, 26, 0.95); /* Siempre oscura en galería */
+            backdrop-filter: blur(20px);
         }
         .nav-logo img { width: 150px; }
-        .nav-logo-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.55rem;
-            font-weight: 800;
-            color: var(--white);
-        }
-        .nav-logo-text span { 
-            color: var(--primary); 
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2.2rem;
-            align-items: center;
-        }
-        .nav-links a {
-            color: var(--light-gray);
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            transition: color 0.3s;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
+        .nav-links { display: flex; list-style: none; gap: 2.2rem; align-items: center; }
+        .nav-links a { color: var(--light-gray); text-decoration: none; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--white); }
-        .nav-links a:hover::after { width: 100%; }
+        .nav-cta { background: var(--primary); color: var(--dark) !important; padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 700; }
 
         .nav-cta {
             background: var(--primary);
@@ -382,31 +339,24 @@
             margin-bottom: 3rem;
         }
 
-@media (max-width: 768px) {
-    .navbar {
-        /* Aumentamos el margen lateral para que el menú "se cierre" hacia el centro */
-        padding: 1rem 15% !important; 
-    }
-    
-    .nav-logo img {
-        width: 110px; /* Un poco más pequeño para que no ocupe todo */
-    }
 
+@media (max-width: 768px) {
     .nav-links {
         position: fixed;
         top: 0;
-        right: -100%;
-        width: 80%; /* Que el menú lateral no sea tan ancho */
+        right: -100%; /* Esto lo esconde a la derecha */
+        width: 70%;    /* Ancho del menú en el celular */
         height: 100vh;
-        background: var(--darker);
+        background-color: var(--darker);
         display: flex;
-        flex-direction: column;
+        flex-direction: column; /* Pone los enlaces uno abajo del otro */
         justify-content: center;
         align-items: center;
         gap: 2rem;
         transition: 0.4s ease;
+        z-index: 1000;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
     }
-}
 
             .nav-links.active { 
                 right: 0; /* Se desliza hacia adentro */
@@ -434,22 +384,21 @@
 <body>
 
     <!-- Navbar -->
-<nav class="navbar" id="navbar">
-    <a href="#" class="nav-logo">
-        <img src="reimac.png" />
+<nav class="navbar">
+    <a href="index.html" class="nav-logo">
+        <img src="reimac.png" alt="Logo Reimac">
     </a>
     
-<ul class="nav-links" id="nav-links">
-    <li id="close-menu" class="close-menu">&times;</li> 
-    
-        <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#nosotros">Nosotros</a></li>
-        <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#proyectos">Proyectos</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-        <li><a href="#" class="nav-cta">Cotizar Ahora</a></li>
-</ul>
-    
+    <ul class="nav-links" id="nav-links">
+        <li id="close-menu" class="close-menu" style="display: none; font-size: 40px; color: var(--primary); cursor: pointer; align-self: flex-end; list-style: none; padding: 10px 20px;">&times;</li>
+        
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+        <li><a href="index.html#servicios">Servicios</a></li>
+        <li><a href="#" style="color: var(--primary)">Galería</a></li>
+        <li><a href="index.html#contacto" class="nav-cta">Cotizar</a></li>
+    </ul>
+
         <div class="hamburger" id="hamburger">
         <span></span>
         <span></span>
@@ -586,6 +535,26 @@
     </div>
 
 <script>
+    // Lógica del menú lateral
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        const closeBtn = document.getElementById('close-menu');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
+
+        // Cerrar menú al tocar un enlace
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
     // Elementos del menú
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
