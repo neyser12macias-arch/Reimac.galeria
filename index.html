@@ -32,18 +32,16 @@
         }
 
         /* Navbar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 1.2rem 8%; /* Subimos de 5% a 8% para centrarlo más */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.4s ease;
-        }
+.navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 1.2rem 10%; /* Esto centra el contenido en PC */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.4s ease;
+}
         .navbar.scrolled {
             background: rgba(15, 15, 26, 0.95);
             backdrop-filter: blur(20px);
@@ -385,24 +383,30 @@
         }
 
 @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem 8%; /* Mantiene el espacio elegante a los lados */
-            }
-            
-            .nav-links { 
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                height: 100vh;
-                background: var(--darker);
-                flex-direction: column;
-                padding: 100px 2rem;
-                transition: 0.4s;
-            }
-            .nav-links.active { right: 0; }
-            .hamburger { display: flex; }
-        }
+    .navbar {
+        /* Aumentamos el margen lateral para que el menú "se cierre" hacia el centro */
+        padding: 1rem 15% !important; 
+    }
+    
+    .nav-logo img {
+        width: 110px; /* Un poco más pequeño para que no ocupe todo */
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%; /* Que el menú lateral no sea tan ancho */
+        height: 100vh;
+        background: var(--darker);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transition: 0.4s ease;
+    }
+}
 
             .nav-links.active { 
                 right: 0; /* Se desliza hacia adentro */
