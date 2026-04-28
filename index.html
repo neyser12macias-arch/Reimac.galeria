@@ -58,50 +58,11 @@
             text-decoration: none;
         }
         .nav-logo img { width: 150px; }
-        .nav-logo-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.55rem;
-            font-weight: 800;
-            color: var(--white);
-        }
-        .nav-logo-text span { 
-            color: var(--primary); 
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2.2rem;
-            align-items: center;
-        }
-        .nav-links a {
-            color: var(--light-gray);
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            transition: color 0.3s;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
+        .nav-links { display: flex; list-style: none; gap: 2.2rem; align-items: center; }
+        .nav-links a { color: var(--light-gray); text-decoration: none; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--white); }
-        .nav-links a:hover::after { width: 100%; }
+        .nav-cta { background: var(--primary); color: var(--dark) !important; padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 700; }
 
-        .nav-cta {
-            background: var(--primary);
-            color: var(--dark) !important;
-            padding: 0.7rem 1.8rem;
-            border-radius: 50px;
-            font-weight: 700;
-            transition: all 0.3s;
-        }
         .nav-cta:hover {
             background: var(--white);
             transform: translateY(-3px);
@@ -369,7 +330,10 @@
         }
 
         @media (max-width: 768px) {
-            .nav-links { 
+            .hamburger { display: flex; }
+            .close-menu { display: block !important; }
+            
+            .nav-links {
                 position: fixed;
                 top: 0;
                 right: -100%;
@@ -377,11 +341,11 @@
                 height: 100vh;
                 background: var(--darker);
                 flex-direction: column;
-                padding: 100px 2rem;
+                padding: 80px 2rem;
                 transition: 0.4s;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
             }
             .nav-links.active { right: 0; }
-            .hamburger { display: flex; }
         }
     </style>
 </head>
@@ -390,10 +354,12 @@
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <a href="#" class="nav-logo">
-            <img src="reimac.png" />
+            <img src="reimac.png" alt="Logo Reimac">
         </a>
         
         <ul class="nav-links" id="nav-links">
+            <li id="close-menu" class="close-menu" style="display: none; font-size: 40px; color: var(--primary); cursor: pointer; align-self: flex-end; list-style: none; padding: 10px 20px;">&times;</li>
+        
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#nosotros">Nosotros</a></li>
             <li><a href="#servicios">Servicios</a></li>
@@ -538,18 +504,23 @@
     </div>
 
     <script>
-        // Navbar scroll
-        window.addEventListener('scroll', () => {
-            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        // Hamburger menu
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
-        
+        const closeBtn = document.getElementById('close-menu');
+
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
+            navLinks.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
+
+        // Cerrar menú al tocar un enlace
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
         });
 
         // Gallery Projects
