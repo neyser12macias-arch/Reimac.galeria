@@ -31,55 +31,24 @@
             line-height: 1.6;
         }
 
-        /* Navbar */
+        /* Navbar (Fija arriba) */
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
             padding: 1.2rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.4s ease;
-        }
-        .navbar.scrolled {
-            background: rgba(15, 15, 26, 0.95);
+            background: rgba(15, 15, 26, 0.95); /* Siempre oscura en galería */
             backdrop-filter: blur(20px);
-            padding: 0.9rem 5%;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
         }
-        .nav-logo {
-            margin-left: -20px;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-        }
-        .nav-logo img { width: 150px; }
+        .nav-logo img { width: 115px; }
         .nav-links { display: flex; list-style: none; gap: 2.2rem; align-items: center; }
         .nav-links a { color: var(--light-gray); text-decoration: none; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--white); }
         .nav-cta { background: var(--primary); color: var(--dark) !important; padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 700; }
 
-        .nav-cta:hover {
-            background: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            cursor: pointer;
-        }
-        .hamburger span {
-            width: 30px;
-            height: 3px;
-            background: var(--white);
-            transition: all 0.3s;
-        }
 
         /* Hero */
         .hero {
@@ -327,6 +296,20 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 3rem;
             margin-bottom: 3rem;
+        }
+
+/* Estilos para el menú móvil */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: var(--white);
+            transition: 0.3s;
         }
 
         @media (max-width: 768px) {
